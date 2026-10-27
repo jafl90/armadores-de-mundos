@@ -421,71 +421,36 @@
   </footer>
 
   <!-- ============================================================= -->
-  <!-- SCRIPT: Muro de historias conectado a GitHub                   -->
+  <!-- SCRIPT: Muro de historias conectado al host (PHP)              -->
   <!--                                                                -->
-  <!-- Cómo funciona (arquitectura segura, sin tokens en el HTML):    -->
-  <!--  1. LECTURA: las historias se leen de data/stories.json        -->
-  <!--     (actualizado automáticamente por un GitHub Action).        -->
-  <!--  2. PUBLICACIÓN: al enviar el formulario, se abre un GitHub     -->
-  <!--     Issue con la historia. Un Action procesa el Issue, guarda   -->
-  <!--     la imagen en /images y añade la historia al JSON.          -->
-  <!--  3. El sitio se actualiza solo (1-2 min) tras el commit.       -->
+  <!-- Cómo funciona:                                                 -->
+  <!--  1. LECTURA: el muro pide las historias a listar.php           -->
+  <!--  2. PUBLICACIÓN: el formulario envía los datos a guardar.php,  -->
+  <!--     que guarda la imagen y la historia al instante.            -->
+  <!--  3. La nueva historia aparece de inmediato (muro abierto).     -->
   <!-- ============================================================= -->
   <script>
-    // ----------------------------------------------------------------
-    // CONFIGURACIÓN DEL REPOSITORIO  (ajusta si cambias de repo)
-    // ----------------------------------------------------------------
-    const GITHUB_OWNER = "jafl90";
-    const GITHUB_REPO  = "armadores-de-mundos";
-    const STORIES_JSON_URL = `https://raw.githubusercontent.com/${GITHUB_OWNER}/${GITHUB_REPO}/main/data/stories.json`;
-    const NEW_ISSUE_URL = `https://github.com/${GITHUB_OWNER}/${GITHUB_REPO}/issues/new`;
-    const MAX_IMAGE_BYTES = 2 * 1024 * 1024; // 2 MB límite para imágenes
-
-    // Historias de respaldo por si el JSON aún no existe o falla la carga
-    const fallbackStories = [
-      {
-        id: "story-1",
-        author: "Comunidad del Pantanal",
-        date: "14 de mayo, 2024",
-        image: "https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?auto=format&fit=crop&w=600&q=80",
-        text: "En las noches más calurosas del estío vimos a una hembra de Priodontes salir pausadamente de su pozo. Al amanecer, medimos la temperatura interior de la galería: diez grados menos que en la superficie ardiente. Más de seis especies distintas aguardaban turno en los alrededores para entrar al fresco."
-      },
-      {
-        id: "story-2",
-        author: "Bióloga Clara Mendoza",
-        date: "22 de junio, 2024",
-        image: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80",
-        text: "Las garras del armadillo gigante pueden medir hasta 20 centímetros, superando proporcionalmente a las del oso polar. Cuando excavan, son verdaderas excavadoras ecológicas. Sin ellos, cientos de invertebrados y pequeños vertebrados no tendrían refugio térmico."
-      },
-      {
-        id: "story-3",
-        author: "Relator Anónimo del Chaco",
-        date: "03 de julio, 2024",
-        image: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=600&q=80",
-        text: "Cuentan los abuelos que el armadillo no cava para esconderse, sino para escuchar los secretos del corazón de la tierra. Cuando termina su labor, deja la puerta abierta para que el zorro, la serpiente y el ave encuentren paz en la tormenta."
-      }
-    ];
-
-    let stories = [];
-    let currentImageDataUrl = ""; // dataURL de la imagen seleccionada (para incrustar en el Issue)
-    let currentImageName = "";
+    // Rutas a los scripts PHP (relativas: funcionan dentro de /armadores/)
+    const API_LISTAR  = "listar.php";
+    const API_GUARDAR = "guardar.php";
+    const MAX_IMAGE_BYTES = 4 * 1024 * 1024; // 4 MB (debe coincidir con guardar.php)
 
     const FALLBACK_IMG = "https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?auto=format&fit=crop&w=600&q=80";
 
+    let stories = [];
+
     // ----------------------------------------------------------------
-    // CARGA DE HISTORIAS DESDE EL REPOSITORIO (data/stories.json)
+    // CARGA DE HISTORIAS DESDE EL HOST
     // ----------------------------------------------------------------
     async function loadStories() {
       try {
-        // cache-buster para ver cambios recientes
-        const res = await fetch(`${STORIES_JSON_URL}?t=${Date.now()}`, { cache: "no-store" });
+        const res = await fetch(`${API_LISTAR}?t=${Date.now()}`, { cache: "no-store" });
         if (!res.ok) throw new Error("HTTP " + res.status);
         const data = await res.json();
-        stories = Array.isArray(data) ? data : (data.stories || []);
-        if (!stories.length) stories = fallbackStories;
+        stories = Array.isArray(data) ? data : [];
       } catch (err) {
-        console.warn("No se pudo cargar stories.json, usando respaldo:", err.message);
-        stories = fallbackStories;
+        console.warn("No se pudieron cargar las historias:", err.message);
+        stories = [];
       }
       renderStories();
     }
@@ -497,91 +462,82 @@
       const file = event.target.files[0];
       if (!file) return;
       if (file.size > MAX_IMAGE_BYTES) {
-        alert("La imagen supera los 2 MB. Por favor elige una más liviana.");
+        alert("La imagen supera los 4 MB. Por favor elige una más liviana.");
         event.target.value = "";
         return;
       }
       const reader = new FileReader();
       reader.onload = function (e) {
-        currentImageDataUrl = e.target.result;
-        currentImageName = file.name;
-        document.getElementById('imagePreview').src = currentImageDataUrl;
+        document.getElementById('imagePreview').src = e.target.result;
         document.getElementById('imagePreviewContainer').classList.remove('hidden');
       };
       reader.readAsDataURL(file);
     }
 
     function clearImagePreview() {
-      currentImageDataUrl = "";
-      currentImageName = "";
       document.getElementById('imagePreview').src = "";
       document.getElementById('imagePreviewContainer').classList.add('hidden');
       document.getElementById('storyImageInput').value = "";
     }
 
     // ----------------------------------------------------------------
-    // PUBLICACIÓN: abre un GitHub Issue con los datos de la historia.
-    // El Action del repo lo procesa y lo añade a stories.json.
+    // PUBLICACIÓN: envía la historia a guardar.php
     // ----------------------------------------------------------------
-    function publishStory() {
-      const author = document.getElementById('authorName').value.trim();
-      const narrative = document.getElementById('storyNarrative').value.trim();
+    async function publishStory() {
+      const authorInput = document.getElementById('authorName');
+      const narrativeInput = document.getElementById('storyNarrative');
+      const imageInput = document.getElementById('storyImageInput');
+      const submitBtn = document.querySelector('#storyForm button[type="submit"]');
+
+      const author = authorInput.value.trim();
+      const narrative = narrativeInput.value.trim();
 
       if (!author || !narrative) {
         alert("Por favor completa tu nombre y tu narración.");
         return;
       }
 
-      // Construir el cuerpo del Issue en el formato que el Action espera.
-      // Usamos bloques delimitados para que el procesador los extraiga sin ambigüedad.
-      let body = "";
-      body += "### Autor\n\n" + author + "\n\n";
-      body += "### Narración\n\n" + narrative + "\n\n";
-      body += "### Imagen\n\n";
-      if (currentImageDataUrl) {
-        body += "_(imagen adjunta abajo)_\n\n";
-        body += "```image\n" + currentImageName + "\n" + currentImageDataUrl + "\n```\n";
-      } else {
-        body += "_(sin imagen)_\n";
+      const formData = new FormData();
+      formData.append('author', author);
+      formData.append('text', narrative);
+      if (imageInput.files[0]) {
+        formData.append('image', imageInput.files[0]);
       }
 
-      const title = "Nueva historia: " + author.substring(0, 60);
-      const url = NEW_ISSUE_URL
-        + "?labels=nueva-historia"
-        + "&title=" + encodeURIComponent(title)
-        + "&body=" + encodeURIComponent(body);
-
-      // Si la URL es demasiado larga (imagen grande), avisamos.
-      if (url.length > 7000) {
-        alert(
-          "La imagen es demasiado pesada para enviarse por este método. " +
-          "Publica la historia sin imagen, o usa una imagen más pequeña (menos de ~1 MB)."
-        );
-        return;
+      // Estado "enviando" para evitar doble envío.
+      const originalLabel = submitBtn ? submitBtn.innerHTML : '';
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span>Publicando…</span>';
       }
 
-      // Vista optimista: mostramos la historia de inmediato en el muro.
-      const now = new Date();
-      const formattedDate = now.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
-      stories.unshift({
-        id: "pending-" + Date.now(),
-        author,
-        date: formattedDate,
-        image: currentImageDataUrl || FALLBACK_IMG,
-        text: narrative,
-        pending: true
-      });
-      renderStories();
+      try {
+        const res = await fetch(API_GUARDAR, { method: 'POST', body: formData });
+        const result = await res.json().catch(() => ({}));
 
-      // Abrimos el Issue en una pestaña nueva para que el usuario confirme el envío.
-      window.open(url, "_blank", "noopener");
+        if (!res.ok || !result.ok) {
+          throw new Error(result.error || ('HTTP ' + res.status));
+        }
 
-      // Limpiamos el formulario.
-      document.getElementById('authorName').value = "";
-      document.getElementById('storyNarrative').value = "";
-      clearImagePreview();
+        // Añadimos la nueva historia al inicio del muro.
+        stories.unshift(result.story);
+        renderStories();
 
-      document.getElementById('storiesGrid').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        // Limpiamos el formulario.
+        authorInput.value = "";
+        narrativeInput.value = "";
+        clearImagePreview();
+
+        document.getElementById('storiesGrid').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      } catch (err) {
+        console.error("Error al publicar:", err);
+        alert("No se pudo publicar la historia: " + err.message);
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = originalLabel;
+        }
+      }
     }
 
     // ----------------------------------------------------------------
@@ -611,27 +567,26 @@
         const author = story.author || "Anónimo";
         const image = story.image || FALLBACK_IMG;
         const date = story.date || "";
-        const pendingBadge = story.pending
-          ? '<div class="absolute top-3 left-3 bg-amber-500/90 backdrop-blur-sm text-white text-[11px] px-2.5 py-0.5 rounded-full font-sans">En revisión…</div>'
-          : '';
 
         const card = document.createElement('div');
         card.className = "bg-white rounded-2xl border border-stone-200/90 overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 flex flex-col group";
 
-        card.innerHTML = `
+        const imageBlock = image ? `
           <div class="h-48 w-full bg-sand-100 overflow-hidden relative border-b border-stone-100">
             <img
               src="${escapeHtml(image)}"
               alt="Ilustración de ${escapeHtml(author)}"
               class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-              onerror="this.src='${FALLBACK_IMG}'"
+              onerror="this.onerror=null;this.src='${FALLBACK_IMG}'"
             >
-            ${pendingBadge}
             <div class="absolute top-3 right-3 bg-stone-900/60 backdrop-blur-sm text-white text-[11px] px-2.5 py-0.5 rounded-full font-sans">
               Armador
             </div>
           </div>
+        ` : '';
 
+        card.innerHTML = `
+          ${imageBlock}
           <div class="p-5 flex-1 flex flex-col justify-between cursor-pointer" onclick="toggleStoryText('${story.id}')" title="Clic para expandir/contraer texto">
             <div class="space-y-2">
               <div id="content-${story.id}" class="text-stone-800 text-sm sm:text-base leading-relaxed font-sans">

@@ -1,64 +1,103 @@
 # Armadores de Mundos 🦡
 
 Sitio web multimedia y comunitario sobre el **armadillo gigante** (*Priodontes maximus*),
-el "Armador de Mundos". Incluye un relato, audiolibros, video y un **muro colaborativo**
-donde cualquier persona puede aportar su propia historia e ilustración.
+el "Armador de Mundos". Incluye un relato, audiolibros, video y un **muro colaborativo abierto**
+donde cualquier visitante puede aportar su propia historia e ilustración.
 
-Las historias se guardan de forma permanente en este repositorio de GitHub.
+Pensado para alojarse en el **host propio (Namecheap / cPanel)** de la Fundación Kurupira,
+en la subcarpeta: **https://fundkurupira.org/armadores/**
 
-## ¿Cómo se guardan las historias? (arquitectura)
+---
 
-El sitio es estático (solo `index.html`) y **no contiene ningún token secreto**.
-El flujo de publicación es seguro:
+## ¿Cómo funciona? (arquitectura)
+
+El sitio corre en tu propio host con **PHP** (no necesita base de datos ni configuración especial):
 
 ```
 [Visitante en la web]
-      │  rellena el formulario y pulsa "Publicar"
+      │  rellena el formulario y pulsa "Publicar historia"
       ▼
-[Se abre un GitHub Issue con la historia + imagen incrustada]
+[guardar.php]  ← guarda la imagen en /imagenes y añade la historia a data/stories.json
       │
       ▼
-[GitHub Action: .github/workflows/process-story.yml]
-      │  • extrae autor, texto e imagen
-      │  • guarda la imagen en /images
-      │  • añade la historia a data/stories.json
-      │  • hace commit y cierra el Issue
-      ▼
-[El sitio lee data/stories.json y muestra la nueva historia]
+[El muro se actualiza al INSTANTE]  ← muro abierto, sin moderación
 ```
 
-Como el HTML nunca guarda credenciales, nadie puede abusar del repositorio.
-La contrapartida es que una historia nueva tarda **1–2 minutos** en aparecer
-(lo que tarda el Action en procesarla).
+Para mostrar el muro, el sitio pide las historias a **listar.php**, que entrega `data/stories.json`.
 
-## Estructura del proyecto
+**Ventajas de esta solución:**
+- ✅ El video y todos los archivos pesados viven en tu host, sin límites de GitHub/YouTube
+- ✅ Las historias se guardan **al instante**
+- ✅ Los visitantes **NO necesitan ninguna cuenta** para publicar
+- ✅ Todo bajo tu control, sin depender de terceros
+- ✅ Sin tokens ni secretos expuestos
+
+---
+
+## 📂 Archivos del proyecto
 
 | Archivo / carpeta | Propósito |
 |---|---|
-| `index.html` | La página web completa (lee y publica historias). |
-| `data/stories.json` | Base de datos de historias. El Action lo actualiza. |
-| `images/` | Imágenes subidas por la comunidad. |
-| `.github/workflows/process-story.yml` | Action que procesa cada Issue nuevo. |
-| `.github/scripts/process-story.js` | Lógica que actualiza el JSON y guarda la imagen. |
-| `.github/ISSUE_TEMPLATE/nueva-historia.yml` | Plantilla del Issue. |
+| `index.html` | La página web completa. |
+| `guardar.php` | Recibe el formulario y guarda la historia + imagen. |
+| `listar.php` | Entrega las historias al muro. |
+| `data/stories.json` | Base de datos de historias (se crea/actualiza solo). |
+| `data/.htaccess` | Impide el acceso directo al JSON desde el navegador. |
+| `imagenes/` | Imágenes subidas por la comunidad (se guardan aquí). |
+| `imagenes/.htaccess` | Seguridad: impide ejecutar código dentro de esta carpeta. |
 
-## Puesta en marcha
+### Archivos multimedia (súbelos tú a la misma carpeta)
 
-1. Sube estos archivos al repositorio `jafl90/armadores-de-mundos`.
-2. En **Settings → Pages**, elige la rama `main` y carpeta `/ (root)`.
-   El sitio quedará en `https://jafl90.github.io/armadores-de-mundos/`.
-3. ¡Listo! El muro ya funciona.
+El `index.html` referencia estos archivos por nombre. Súbelos junto al resto:
 
-## Archivos multimedia
-
-El `index.html` referencia estos archivos locales (súbelos a la raíz del repo si los tienes):
-
-- `Armadora de mundos.png` (logo / póster)
+- `Armadora de mundos.png` (logo / póster del video)
 - `Armadores-de-mundo-Diana.mp3` (voz femenina)
 - `Armadores-de-mundo-Arón.mp3` (voz masculina)
-- `Armadora_de_mundos.mp4` (video)
+- `Armadora_de_mundos.mp4` (video) ← **ahora sí puedes subirlo, sin el límite de GitHub**
 
-Si no los subes, el sitio usa los enlaces de respaldo de Google Drive ya incluidos.
+Si no subes alguno, el sitio usa los enlaces de respaldo de Google Drive ya incluidos.
+
+---
+
+## 🚀 Instalación en cPanel (Namecheap) — paso a paso
+
+1. **Entra a cPanel** de tu cuenta de Namecheap y abre el **Administrador de archivos** (File Manager).
+2. Ve a la carpeta **`public_html`** (es la raíz de tu sitio web).
+3. **Crea una carpeta nueva** llamada **`armadores`** y entra en ella.
+4. **Sube estos archivos y carpetas** dentro de `armadores/`:
+   - `index.html`
+   - `guardar.php`
+   - `listar.php`
+   - la carpeta `data/` (con su `.htaccess` dentro)
+   - la carpeta `imagenes/` (con su `.htaccess` dentro)
+   - tus archivos multimedia (`.mp4`, `.mp3`, `.png`)
+
+   > 💡 Truco: puedes subir todo comprimido en un `.zip` y luego usar "Extraer" en cPanel. Es más rápido.
+
+5. **Permisos de carpetas** (para que PHP pueda escribir):
+   - Clic derecho sobre `data/` → **Permissions** → ponle **755** (o 775 si 755 no funciona).
+   - Haz lo mismo con `imagenes/`.
+   - *(En la mayoría de hostings de Namecheap, 755 es suficiente.)*
+
+6. **Verifica la versión de PHP** (opcional):
+   - En cPanel → **Select PHP Version** → asegúrate de que sea **7.4 u 8.x**.
+   - La extensión **`fileinfo`** debe estar activada (viene activada por defecto).
+
+7. **¡Listo!** Visita **https://fundkurupira.org/armadores/** y prueba a publicar una historia.
+
+---
+
+## ✅ Cómo comprobar que funciona
+
+- Abre `https://fundkurupira.org/armadores/listar.php` en el navegador:
+  deberías ver las historias en formato JSON (texto). Si lo ves, el backend funciona.
+- Publica una historia de prueba desde el formulario: debe aparecer en el muro al instante.
+- Revisa que en `imagenes/` aparezca la foto que subiste.
+
+### Si algo falla
+- **"No se pudo publicar"** → revisa los permisos de `data/` e `imagenes/` (ponlos en 775).
+- **El muro sale vacío** → abre `listar.php` directamente; si da error 500, revisa la versión de PHP.
+- **La imagen no se guarda** → confirma que `imagenes/` tiene permisos de escritura.
 
 ---
 

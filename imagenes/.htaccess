@@ -1,0 +1,25 @@
+# Seguridad: en esta carpeta solo deben existir imágenes subidas por usuarios.
+# Impedimos que el servidor ejecute cualquier script (PHP, CGI, etc.) aquí,
+# por si alguien lograra subir un archivo malicioso.
+
+# Desactivar la ejecución de PHP (varios métodos para máxima compatibilidad)
+<IfModule mod_php.c>
+  php_flag engine off
+</IfModule>
+<IfModule mod_php7.c>
+  php_flag engine off
+</IfModule>
+<IfModule mod_php8.c>
+  php_flag engine off
+</IfModule>
+
+# Tratar cualquier script como texto plano (no ejecutar)
+<FilesMatch "\.(php|php5|php7|phtml|pl|py|cgi|sh|asp|aspx)$">
+  SetHandler none
+  SetHandler default-handler
+  ForceType text/plain
+  Require all denied
+</FilesMatch>
+
+# No permitir listar el contenido de la carpeta
+Options -Indexes -ExecCGI

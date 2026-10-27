@@ -1,0 +1,10 @@
+# Impedir el acceso directo desde el navegador a la base de datos de historias.
+# El sitio NO necesita acceder a stories.json directamente: siempre pasa por
+# listar.php (que SÍ puede leerlo desde el servidor sin esta restricción).
+Require all denied
+
+# Fallback para servidores Apache antiguos (< 2.4)
+<IfModule !mod_authz_core.c>
+  Order deny,allow
+  Deny from all
+</IfModule>
