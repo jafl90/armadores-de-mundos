@@ -570,21 +570,52 @@
         const isLongText = text.length > 200;
         const shortText = isLongText ? text.substring(0, 200) + "..." : text;
         const author = story.author || "Anónimo";
-        // Publicaciones de solo texto: sin imagen (image queda vacío y no se
-        // renderiza el bloque de imagen). Solo se muestra imagen si el usuario
-        // subió una.
-        const image = story.image && story.image.trim() !== "" ? story.image : "";
         const date = story.date || "";
+        const image = story.image && story.image.trim() !== "" ? story.image : "";
+
+        // Tres tipos de publicación, cada uno con su propio diseño:
+        const hasImage = image !== "";
+        const hasText  = text.trim() !== "";
+        const onlyImage = hasImage && !hasText;   // solo imagen -> ocupa toda la ficha
+        const onlyText  = hasText && !hasImage;   // solo texto  -> sin imagen, más espacio
 
         const card = document.createElement('div');
         card.className = "bg-white rounded-2xl border border-stone-200/90 overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 flex flex-col group";
 
-        // Las tarjetas de SOLO TEXTO (sin imagen) reciben más espacio interno
-        // para que el relato respire y la tarjeta tenga mejor presencia.
-        const contentPadding = image ? "p-5" : "p-7 sm:p-8";
-        const textSpacing = image ? "space-y-2" : "space-y-4";
+        // ---- CASO 1: SOLO IMAGEN (la imagen ocupa toda la ficha) ----
+        if (onlyImage) {
+          card.innerHTML = `
+            <div class="relative w-full aspect-square bg-sand-100 overflow-hidden">
+              <img
+                src="${escapeHtml(image)}"
+                alt="Ilustración de ${escapeHtml(author)}"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                onerror="this.onerror=null;this.closest('div').style.display='none'"
+              >
+              <div class="absolute top-3 right-3 bg-stone-900/60 backdrop-blur-sm text-white text-[11px] px-2.5 py-0.5 rounded-full font-sans">
+                Armador
+              </div>
+              <!-- Autor y fecha superpuestos en la parte inferior -->
+              <div class="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black/70 via-black/30 to-transparent flex items-center justify-between text-xs text-white">
+                <span class="font-medium flex items-center gap-1.5">
+                  <span class="w-5 h-5 rounded-full bg-white/25 text-white flex items-center justify-center text-[10px] font-bold">
+                    ${escapeHtml(author.charAt(0).toUpperCase())}
+                  </span>
+                  ${escapeHtml(author)}
+                </span>
+                <span class="text-white/80 font-mono text-[11px]">${escapeHtml(date)}</span>
+              </div>
+            </div>
+          `;
+          grid.appendChild(card);
+          return;
+        }
 
-        const imageBlock = image ? `
+        // ---- CASO 2 y 3: con texto (con o sin imagen) ----
+        const contentPadding = hasImage ? "p-5" : "p-7 sm:p-8";
+        const textSpacing = hasImage ? "space-y-2" : "space-y-4";
+
+        const imageBlock = hasImage ? `
           <div class="h-48 w-full bg-sand-100 overflow-hidden relative border-b border-stone-100">
             <img
               src="${escapeHtml(image)}"
@@ -602,13 +633,13 @@
           ${imageBlock}
           <div class="${contentPadding} flex-1 flex flex-col justify-between cursor-pointer" onclick="toggleStoryText('${story.id}')" title="Clic para expandir/contraer texto">
             <div class="${textSpacing}">
-              ${!image ? `
+              ${onlyText ? `
                 <div class="flex items-center gap-2 text-brand-700">
                   <svg class="w-6 h-6 opacity-60" fill="currentColor" viewBox="0 0 24 24"><path d="M9.983 3v7.391c0 5.704-3.731 9.57-8.983 10.609l-.995-2.151c2.432-.917 3.995-3.638 3.995-5.849h-4v-10h9.983zm14.017 0v7.391c0 5.704-3.748 9.571-9 10.609l-.996-2.151c2.433-.917 3.996-3.638 3.996-5.849h-3.983v-10h9.983z"/></svg>
                   <span class="text-[11px] uppercase tracking-wider font-semibold text-brand-700/80">Relato</span>
                 </div>
               ` : ''}
-              <div id="content-${story.id}" class="text-stone-800 ${!image ? 'text-base sm:text-lg' : 'text-sm sm:text-base'} leading-relaxed font-sans">
+              <div id="content-${story.id}" class="text-stone-800 ${onlyText ? 'text-base sm:text-lg' : 'text-sm sm:text-base'} leading-relaxed font-sans">
                 <span id="text-${story.id}">${escapeHtml(shortText)}</span>
                 ${isLongText ? `
                   <button type="button" class="text-brand-800 font-semibold hover:underline text-xs inline-block ml-1 focus:outline-none">
