@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Armadores de Mundos - Priodontes maximus</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;800&amp;family=EB+Garamond:ital,wght@0,400..800;1,400..800&amp;family=Plus+Jakarta+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300..800;1,300..800&amp;display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f2f7f4',
+              100: '#e1ede5',
+              200: '#c5ddce',
+              300: '#9bc4ac',
+              400: '#6ca484',
+              500: '#488563',
+              600: '#346a4d',
+              700: '#2b543e',
+              800: '#244333',
+              900: '#1e3b2b',
+              950: '#0f2017'
+            },
+            earth: {
+              50: '#fdf8f5',
+              100: '#f9eee8',
+              200: '#f3dacf',
+              300: '#e9bead',
+              400: '#dc9982',
+              500: '#cf775d',
+              600: '#b85a41',
+              700: '#994833',
+              800: '#7d3d2c',
+              900: '#673528'
+            },
+            sand: {
+              50: '#FAF8F5',
+              100: '#F4EFEA',
+              200: '#EAE2D8',
+              300: '#D8CCA8'
+            }
+          },
+          fontFamily: {
+            serif: ['EB Garamond', 'Georgia', 'serif'],
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+            display: ['Cinzel', 'EB Garamond', 'serif']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Custom audio styling */
+    audio::-webkit-media-controls-panel {
+      background-color: #f4efea;
+    }
+    .custom-scroll::-webkit-scrollbar {
+      width: 6px;
+    }
+    .custom-scroll::-webkit-scrollbar-track {
+      background: #f4efea;
+      border-radius: 9999px;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: #c5ddce;
+      border-radius: 9999px;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb:hover {
+      background: #6ca484;
+    }
+    .copyleft {
+      display: inline-block;
+      transform: scaleX(-1);
+    }
+    /* Global Montserrat override */
+    * { font-family: 'Montserrat', sans-serif !important; }
+    body, h1, h2, h3, h4, h5, h6, p, span, a, button, input, textarea, blockquote, label, div { font-family: 'Montserrat', sans-serif !important; }
+    .font-serif, .font-sans, .font-display { font-family: 'Montserrat', sans-serif !important; }
+    /* Line clamp helper for story cards */
+    .line-clamp-3 {
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body class="bg-[#FAF8F5] text-stone-800 font-sans antialiased selection:bg-brand-200 selection:text-brand-900">
+
+  <!-- Top Announcement / Kurupira Style Banner -->
+  <div class="bg-brand-950 text-brand-200 text-xs py-2 px-4 border-b border-brand-900/60">
+    <div class="max-w-6xl mx-auto flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span class="tracking-wide">Iniciativa de Divulgación y Conservación de la Biodiversidad • Inspirado en Fundación Kurupira</span>
+      </div>
+      <div class="hidden sm:flex items-center gap-4 text-brand-300">
+        <span class="font-mono text-[11px]">Priodontes maximus</span>
+        <span class="text-brand-700">|</span>
+        <span>Especie Ingeniera de Ecosistemas</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header / Encabezado Principal -->
+  <header class="z-40 bg-[#FAF8F5]/95 backdrop-blur-md border-b border-stone-200/80 transition-all duration-300 relative">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
+      <!-- Logotipo centrado & Título ampliado 3x -->
+      <div class="flex flex-col items-center justify-center text-center py-4 w-full">
+        <a href="#inicio" class="flex flex-col items-center gap-4 group">
+          <div class="relative max-w-full overflow-hidden bg-transparent transition duration-300 flex items-center justify-center p-2" style="width: 512px; max-width: 100%; height: 384px;">
+            <img src="Armadora de mundos.png" alt="Armadores de Mundos - Armadillo gigante" class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105" style="mix-blend-mode: multiply;">
+          </div>
+          <div class="flex flex-col items-center">
+            <h1 class="font-display font-bold text-3xl sm:text-4xl text-brand-950 tracking-tight leading-tight">
+              ARMADORES DE MUNDOS</h1>
+            <p class="text-xs uppercase tracking-widest text-brand-700 font-semibold flex items-center gap-1.5 mt-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-earth-500 inline-block"></span>
+              Armadillo Gigante · <span class="italic font-normal">Priodontes maximus</span>
+            </p>
+          </div>
+        </a>
+
+        <!-- Quick Nav Links Centrados -->
+        <nav class="flex flex-wrap items-center justify-center gap-6 sm:gap-8 text-sm font-medium text-stone-600 mt-6 pt-4 border-t border-stone-200/60 w-full max-w-xl mx-auto">
+          <a href="#historia" class="hover:text-brand-800 transition">La Historia</a>
+          <a href="#reproductores" class="hover:text-brand-800 transition">Audiolibro</a>
+          <a href="#audiovisual" class="hover:text-brand-800 transition">Multimedia</a>
+          <a href="#muro-interactivo" class="inline-flex items-center gap-1.5 px-5 py-2 rounded-full bg-brand-900 text-brand-50 hover:bg-brand-800 transition shadow-sm hover:shadow">
+            <span>Participar</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+          </a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="inicio" class="relative overflow-hidden pt-12 pb-16 lg:py-20 border-b border-stone-200 bg-gradient-to-b from-[#FAF8F5] via-sand-100 to-[#FAF8F5]">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 text-center">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-100/80 border border-brand-200 text-brand-800 text-xs font-medium mb-6">
+        <svg class="w-4 h-4 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+        <span>Proyecto Multimedia &amp; Ficción Ambiental Colaborativa</span>
+      </div>
+
+      <h2 class="font-serif text-brand-950 font-normal leading-[1.15] mb-6 text-2xl sm:text-3xl">Conoce al&nbsp; <span class="italic font-bold text-earth-700">Ocarro o Armadillo Gigante,</span>&nbsp;<span style="font-size: calc(1em + 2.66667px);">a partir de una historia de fantasía de la que tú también puedes escribir un capítulo</span>.<br><br></h2>
+
+      <p class="max-w-3xl mx-auto text-stone-600 leading-relaxed font-sans mb-8 text-lg sm:text-xl">El&nbsp;<strong class="text-brand-900 font-semibold">Ocarro o armadillo gigante</strong> (<span class="italic font-serif">Priodontes maximus</span>), es considerado como el arquitecto de naturaleza. Es una especie sombrilla, es decir que al protergerlo estaremos cuidando tambien de muchas otras especies que hacen parte del ecosistema. Te invitamos a leer o escuchar la historia y adejar volar tu imaginación para que escribas una continuación al relato o para que nos muestres mediante un dibujo como imáginas a los personajes o a ese mundo fantástico.&nbsp;</p>
+
+      <div class="flex flex-wrap justify-center items-center gap-4 text-sm">
+        <a href="#historia" class="px-6 py-3 rounded-full bg-brand-900 hover:bg-brand-800 text-white font-medium shadow-md hover:shadow-lg transition">
+          Leer la Historia
+        </a>
+        <a href="#reproductores" class="px-6 py-3 rounded-full bg-stone-100 hover:bg-stone-200 border border-stone-300 text-stone-800 font-medium transition flex items-center gap-2">
+          <svg class="w-4 h-4 text-brand-700" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"></path></svg>
+          Escuchar Relato&nbsp;</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content Container -->
+  <main class="max-w-5xl mx-auto px-4 sm:px-6 py-12 space-y-16">
+
+    <!-- SECCIÓN DE AUDIO / PODCAST (Sobre el cuadro de lectura) -->
+    <section id="reproductores" class="scroll-mt-24">
+      <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-stone-200/90 relative overflow-hidden">
+        <div class="absolute -right-8 -top-8 w-40 h-40 bg-brand-50 rounded-full blur-2xl pointer-events-none"></div>
+        <div class="relative z-10">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-6 mb-6 border-b border-stone-100 gap-2">
+            <div>
+              <h3 class="font-serif text-2xl sm:text-3xl text-brand-950 font-semibold">Narraciones Sonoras</h3>
+            </div>
+            <p class="text-xs text-stone-500 max-w-xs">
+              Elige tu narrador preferido</p>
+          </div>
+
+          <!-- Dos reproductores nativos -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Reproductor Voz Femenina -->
+            <div class="bg-sand-50/80 rounded-2xl p-5 border border-stone-200/80 hover:border-brand-300 transition group">
+              <div class="flex items-center justify-between mb-3">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-full bg-earth-100 text-earth-700 flex items-center justify-center font-serif font-bold text-sm">
+                    ♀
+                  </div>
+                  <div>
+                    <h4 class="font-medium text-stone-900 text-base">Voz femenina</h4>
+                  </div>
+                </div>
+                <span class="text-[11px] font-mono bg-white px-2.5 py-1 rounded-full text-stone-500 border border-stone-200">Audio 1</span>
+              </div>
+              <div class="mt-4 pt-3 border-t border-stone-200/60">
+                <audio controls class="w-full h-10 rounded-lg focus:outline-none" preload="metadata">
+                  <source src="Armadores-de-mundo-Diana.mp3">
+                  <source src="https://docs.google.com/uc?export=open&amp;id=1nrPCuEH5IVidS5e8XiDvw4tlKSNM-1Ub" type="audio/mpeg">
+                  Tu navegador no soporta el elemento de audio.
+                </audio>
+                <div class="mt-2 text-right">
+                  <a href="https://drive.google.com/file/d/1nrPCuEH5IVidS5e8XiDvw4tlKSNM-1Ub/view?usp=drive_link" target="_blank" rel="noopener noreferrer" class="text-[11px] text-brand-700 hover:underline inline-flex items-center gap-1">
+                    Abrir enlace directo del audio ↗
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Reproductor Voz Masculina -->
+            <div class="bg-sand-50/80 rounded-2xl p-5 border border-stone-200/80 hover:border-brand-300 transition group">
+              <div class="flex items-center justify-between mb-3">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-full bg-brand-100 text-brand-800 flex items-center justify-center font-serif font-bold text-sm">
+                    ♂
+                  </div>
+                  <div>
+                    <h4 class="font-medium text-stone-900 text-base">Voz masculina</h4>
+                  </div>
+                </div>
+                <span class="text-[11px] font-mono bg-white px-2.5 py-1 rounded-full text-stone-500 border border-stone-200">Audio 2</span>
+              </div>
+              <div class="mt-4 pt-3 border-t border-stone-200/60">
+                <audio controls class="w-full h-10 rounded-lg focus:outline-none" preload="metadata">
+                  <source src="Armadores-de-mundo-Arón.mp3">
+                  <source src="https://docs.google.com/uc?export=open&amp;id=19MzrwnHQOUN0GzjQMEP1DqZRrcWvv_Zt" type="audio/mpeg">
+                  Tu navegador no soporta el elemento de audio.
+                </audio>
+                <div class="mt-2 text-right">
+                  <a href="https://drive.google.com/file/d/19MzrwnHQOUN0GzjQMEP1DqZRrcWvv_Zt/view?usp=drive_link" target="_blank" rel="noopener noreferrer" class="text-[11px] text-brand-700 hover:underline inline-flex items-center gap-1">
+                    Abrir enlace directo del audio ↗
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECCIÓN PRINCIPAL: CUADRO DE LECTURA (Texto extraído del documento) -->
+    <section id="historia" class="scroll-mt-24">
+      <div class="bg-white rounded-3xl p-6 sm:p-10 lg:p-12 shadow-sm border border-stone-200 relative">
+        <div class="flex items-center justify-between pb-6 mb-6 border-b border-stone-200">
+          <div class="flex items-center gap-3">
+            <span class="w-8 h-8 rounded-full bg-brand-900 text-white flex items-center justify-center font-serif text-sm font-bold">¶</span>
+            <div>
+              <span class="text-xs uppercase tracking-wider font-semibold text-brand-700">Relato Fundacional</span>
+              <h3 class="font-serif text-2xl sm:text-3xl font-bold text-stone-900">Armador de mundos</h3>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 text-xs text-stone-500 font-mono">
+            <span>Lectura estimada: ~5 min</span>
+          </div>
+        </div>
+
+        <!-- Contenedor con tipografía editorial / Garamond -->
+        <article class="prose prose-stone max-w-none font-serif text-lg sm:text-xl leading-relaxed text-stone-800 space-y-6" style="text-align: justify;">
+          <p class="first-letter:text-6xl first-letter:font-bold first-letter:text-brand-900 first-letter:mr-3 first-letter:float-left first-letter:font-serif first-letter:leading-none" style="text-align: justify;">Desde tiempos que solo los arqueólogos han sido capaces de narrar, los humanos y sus antecesores homínidos han creído en Dioses, en creadores supremos que dieron origen a las múltiples formas de vida y organizaron la materia que se hallaba dispersa en los misterios del universo. Dioses creadores y destructores, Dioses de paz y de guerra, Dioses que han alimentado la dicotomía entre el bien y el mal; las sociedades primitivas y complejas nos hemos organizado en torno a esos seres maravillosos que jamás hemos visto, pero de los cuales hacemos imágenes para postrarnos ante ellas.</p>
+
+          <p>Por su parte, biólogos y etólogos no han podido registrar o dilucidar tendencia alguna en otras formas de vida, que los lleve a la conclusión que también rinden tributo a seres etéreos. ¿La razón? Las otras formas de vida entienden algo que nosotros no. Esos seres organizadores del cosmos, de la materia, generadores de mundos… viven entre ellos. Si se va a los lugares correctos pueden verse, puede descubrirse con los sentidos su presencia sosegada y tranquila. Son seres milenarios que llevan consigo el conocimiento de la creación, que arrastran en sus genes los misterios del verbo, ese que los lenguajes humanos no pueden nombrar.&nbsp; Son seres que pasan desapercibidos, pero son respetados por los otros seres vivos que comprenden su importancia en el ciclo de la vida.</p>
+
+          <div class="my-8 p-6 bg-sand-50 rounded-2xl border-l-4 border-brand-800 font-sans text-base italic text-brand-950">Uno de ellos son los Armadillos Gigantes, los Armadores de Mundos.</div>
+
+          <p>Cuando la luz desaparece ellos salen al exterior midiendo cada paso con su olfato. Cuando no comprenden lo que hay en el horizonte se paran en sus patas traseras y empiezan a recorrerlo todo con su nariz que se extiende para capturar las tenues corrientes de aire. Evitan siempre toda situación que no sea serena, limitándose a buscar insectos de los qué alimentarse y a desplazarse a los otros mundos que requieren de mantenimiento o especial cuidado. Antes que la luz vuelva a aparecer, se internan de nuevo en uno de los mundos subterráneos para retomar su función en el cosmos.</p>
+
+          <p>En cuanto entran en las madrigueras, aquellos mundos inasibles para los humanos, se transforman en su verdadera esencia. Las placas óseas de sus cuerpos empiezan a revelar los verbos creadores escritos en el lenguaje de la Pacha; de sus ojos, surge una luz que se cierne por cada rincón del mundo subterráneo dando una claridad que parece que viniera de todas las direcciones; aun así, es posible verlos directamente a los ojos sin ser deslumbrado. Sus garras muestran las marcas de la experiencia, es con ellas que han dado forma a todo, ellas son capaces de destrozar la más firme roca para transformarla en galerías, túneles y resguardos.</p>
+
+          <p>En sus mundos, encuentran refugio murciélagos, borugas, barranqueros, ratones, picures y serpientes. Se convierten en resguardos en los que no entran depredadores ni cazadores. Viven por temporadas, a veces crían a sus cachorros, otras solo pasan las horas más calurosas del día o más frías de la noche. Pero siempre, todas las especies retoman su esencia primigenia al pasar por el túnel principal de las madrigueras. Estas otras especies no son creadoras, pero cada una hace parte del equilibrio; los barranqueros y algunos murciélagos son la conexión entre el mundo terrestre y los cielos; las borugas, nerviosas en el exterior, son la calma que mantiene unida la vida; las serpientes cuatro narices, temidas por los humanos, profesan la ciencia de la vida, conocen los secretos del tiempo y pueden interpretar los verbos en las placas óseas de los armadillos. Los ratones susurran mensajes entre los reinos al poder comunicarse con plantas, anfibios, insectos, arácnidos y mamíferos.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- SECCIÓN DE VIDEO NATIVO (<video>) -->
+    <section id="audiovisual" class="scroll-mt-24">
+      <div class="bg-white rounded-3xl p-6 sm:p-8 lg:p-10 shadow-sm border border-stone-200">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-6 mb-6 border-b border-stone-100 gap-2">
+          <div>
+            <h3 class="font-serif text-2xl sm:text-3xl text-brand-950 font-semibold">Los misterios revelados</h3>
+          </div>
+        </div>
+
+        <div class="relative bg-stone-900 rounded-2xl overflow-hidden shadow-lg border border-stone-800 aspect-video max-w-4xl mx-auto flex items-center justify-center">
+          <!-- Video Tag Nativo -->
+          <video controls playsinline preload="metadata" poster="Armadora de mundos.png" class="w-full h-full object-contain rounded-2xl">
+            <source src="Armadora_de_mundos.mp4">
+            <source src="https://drive.google.com/file/d/1XaabFi9A5H9tsCx2uOPtd9YOtUTqJogz/view?usp=sharing">
+            Tu navegador no soporta la reproducción de video HTML5.
+          </video>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECCIÓN INTERACTIVA -->
+    <section id="muro-interactivo" class="scroll-mt-24 space-y-10">
+
+      <!-- Título de la Sección -->
+      <div class="text-center max-w-3xl mx-auto">
+        <span class="inline-block px-3 py-1 rounded-full bg-amber-100 text-amber-800 text-xs font-semibold tracking-wider uppercase mb-3">
+          Comunidad &amp; Creación Viva
+        </span>
+        <h3 class="font-serif text-3xl sm:text-4xl lg:text-5xl text-stone-900 font-bold tracking-tight">
+          "Esta historia es de tod@s, este mundo es de tod@s"
+        </h3>
+      </div>
+
+      <!-- PARTE 1: FORMULARIO DE APORTACIÓN -->
+      <div class="bg-white rounded-3xl p-6 sm:p-10 shadow-md border border-stone-200/90 relative">
+        <div class="flex items-center gap-2 mb-6">
+          <span class="w-3 h-3 rounded-full bg-amber-600"></span>
+          <h4 class="font-sans font-bold text-xl text-stone-900">Comparte tu relato o tu ilustración del ARMADOR DE MUNDOS. Tu voz y tu arte expanden su universo.</h4>
+        </div>
+
+        <form id="storyForm" class="space-y-6">
+
+          <!-- Nombre de usuario -->
+          <div>
+            <label for="authorName" class="block text-sm font-semibold text-stone-700 mb-2">
+              Tu nombre o seudónimo de autor/a <span class="text-amber-600">*</span>
+            </label>
+            <input type="text" id="authorName" required placeholder="Ej. Martín Guardián del Monte, Sofía Ríos..." class="w-full px-4 py-3 rounded-xl border border-stone-300 focus:border-amber-700 focus:ring-2 focus:ring-amber-200 bg-stone-50/50 text-stone-800 text-base outline-none transition">
+          </div>
+
+          <!-- Cuadro de texto amplio -->
+          <div>
+            <div class="flex justify-between items-center mb-2">
+              <label for="storyNarrative" class="block text-sm font-semibold text-stone-700">
+                Tu narración&nbsp;<span class="text-amber-600">*</span>
+              </label>
+              <span class="text-xs text-stone-400">Sin límite de caracteres</span>
+            </div>
+            <textarea id="storyNarrative" rows="6" required placeholder="Escribe aquí tu relato..." class="w-full px-4 py-3 rounded-xl border border-stone-300 focus:border-amber-700 focus:ring-2 focus:ring-amber-200 bg-stone-50/50 text-stone-800 text-base outline-none transition"></textarea>
+          </div>
+
+          <!-- Selector / Carga de imagen -->
+          <div class="space-y-2">
+            <label class="block text-sm font-semibold text-stone-700">
+              Ilustración o fotografía del personaje / ambiente
+            </label>
+            <div class="flex flex-col sm:flex-row items-center gap-4 p-4 rounded-xl border-2 border-dashed border-stone-300 bg-stone-50/30 hover:bg-stone-50 transition">
+              <input type="file" id="storyImageInput" accept="image/*" class="block w-full text-sm text-stone-500 file:mr-4 file:py-2.5 file:px-5 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-stone-900 file:text-white hover:file:bg-stone-800 cursor-pointer" onchange="handleImagePreview(event)">
+            </div>
+            <!-- Previsualización -->
+            <div id="imagePreviewContainer" class="hidden mt-3 relative w-32 h-32 rounded-xl overflow-hidden border border-stone-300 shadow-sm">
+              <img id="imagePreview" src="" alt="Vista previa" class="w-full h-full object-cover">
+              <button type="button" onclick="clearImagePreview()" class="absolute top-1 right-1 bg-stone-900/80 hover:bg-stone-900 text-white p-1 rounded-full text-xs">✕</button>
+            </div>
+          </div>
+
+          <!-- Botón de acción principal -->
+          <div class="pt-2 flex items-center justify-end">
+            <button type="submit" class="w-full sm:w-auto px-8 py-3.5 rounded-full bg-stone-900 hover:bg-stone-800 active:scale-[0.98] text-white font-medium text-base shadow-md hover:shadow-lg transition flex items-center justify-center gap-2">
+              <span>Publicar historia</span>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- PARTE 2: MURO DE PUBLICACIONES -->
+      <div>
+        <div class="flex items-center justify-between mb-6">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+            <h4 class="font-sans font-bold text-xl text-stone-900">Muro de Historias de la Comunidad</h4>
+          </div>
+        </div>
+
+        <!-- Grid dinámico -->
+        <div id="storiesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Las historias aparecerán aquí automáticamente -->
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  <!-- Pie de página con Copyleft -->
+  <footer class="bg-brand-950 text-stone-300 mt-20 border-t border-brand-900">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-12">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center border-b border-brand-900/80 pb-8">
+
+        <!-- Logo y descripción -->
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 rounded-xl bg-brand-900 ring-1 ring-brand-700 p-0.5 overflow-hidden flex items-center justify-center">
+            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAdZTDgMTzrb1sviNSdjfgrR4qxGpeqCXj2Y5VekR-BMw-SysmTkDz0IpzCyD0Io4IS3OMOFwxwvBis-WhY0cMQQb2zfbaDZ5f9yCiVBzJSDO0kVrYxXsU_lvLExHM3tQIbKgfV41pw6ozitcPYXnkDTqzcNiZ12qpmP3TUD9X8nZY_d1lpSdZkadISSuv-2EnWXIw1li3w0iQtgmZBd1493kCW2mSYXYuXZ8HfG-qtT_CB1QzGYqiLqw" alt="Logo Priodontes" class="w-full h-full object-cover">
+          </div>
+          <div>
+            <h5 class="font-serif font-bold text-white text-lg">Armadores de Mundos</h5>
+            <p class="text-xs text-stone-400">Priodontes maximus · Arquitectos del Bosque</p>
+          </div>
+        </div>
+
+        <!-- Inspiración y enlaces -->
+        <div class="text-xs text-stone-400 text-center md:text-left">
+          <p>Plataforma pedagógica y comunitaria inspirada en la labor ambiental de <a href="https://fundkurupira.org/" target="_blank" rel="noopener noreferrer" class="text-emerald-400 hover:underline">Fundación Kurupira</a>.</p>
+        </div>
+
+        <!-- Sello Copyleft -->
+        <div class="flex flex-col items-center md:items-end justify-center">
+          <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-900/70 border border-brand-800 text-brand-200 text-sm font-mono">
+            <span class="copyleft font-bold text-base leading-none">©</span>
+            <span class="font-sans font-semibold text-white tracking-wide">Copyleft 2026</span>
+          </div>
+          <p class="text-[11px] text-stone-400 mt-1.5 text-center md:text-right">
+            Conocimiento abierto para la conservación de la vida silvestre.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- Nota al pie final -->
+      <div class="pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-stone-500 gap-2">
+        <p>Todos los derechos compartidos. Puedes reutilizar y expandir estos relatos citando el origen.</p>
+        <div class="flex items-center gap-4">
+          <a href="#inicio" class="hover:text-stone-300 transition">Volver arriba ↑</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============================================================= -->
+  <!-- SCRIPT: Muro de historias conectado a GitHub                   -->
+  <!--                                                                -->
+  <!-- Cómo funciona (arquitectura segura, sin tokens en el HTML):    -->
+  <!--  1. LECTURA: las historias se leen de data/stories.json        -->
+  <!--     (actualizado automáticamente por un GitHub Action).        -->
+  <!--  2. PUBLICACIÓN: al enviar el formulario, se abre un GitHub     -->
+  <!--     Issue con la historia. Un Action procesa el Issue, guarda   -->
+  <!--     la imagen en /images y añade la historia al JSON.          -->
+  <!--  3. El sitio se actualiza solo (1-2 min) tras el commit.       -->
+  <!-- ============================================================= -->
+  <script>
+    // ----------------------------------------------------------------
+    // CONFIGURACIÓN DEL REPOSITORIO  (ajusta si cambias de repo)
+    // ----------------------------------------------------------------
+    const GITHUB_OWNER = "jafl90";
+    const GITHUB_REPO  = "armadores-de-mundos";
+    const STORIES_JSON_URL = `https://raw.githubusercontent.com/${GITHUB_OWNER}/${GITHUB_REPO}/main/data/stories.json`;
+    const NEW_ISSUE_URL = `https://github.com/${GITHUB_OWNER}/${GITHUB_REPO}/issues/new`;
+    const MAX_IMAGE_BYTES = 2 * 1024 * 1024; // 2 MB límite para imágenes
+
+    // Historias de respaldo por si el JSON aún no existe o falla la carga
+    const fallbackStories = [
+      {
+        id: "story-1",
+        author: "Comunidad del Pantanal",
+        date: "14 de mayo, 2024",
+        image: "https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?auto=format&fit=crop&w=600&q=80",
+        text: "En las noches más calurosas del estío vimos a una hembra de Priodontes salir pausadamente de su pozo. Al amanecer, medimos la temperatura interior de la galería: diez grados menos que en la superficie ardiente. Más de seis especies distintas aguardaban turno en los alrededores para entrar al fresco."
+      },
+      {
+        id: "story-2",
+        author: "Bióloga Clara Mendoza",
+        date: "22 de junio, 2024",
+        image: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80",
+        text: "Las garras del armadillo gigante pueden medir hasta 20 centímetros, superando proporcionalmente a las del oso polar. Cuando excavan, son verdaderas excavadoras ecológicas. Sin ellos, cientos de invertebrados y pequeños vertebrados no tendrían refugio térmico."
+      },
+      {
+        id: "story-3",
+        author: "Relator Anónimo del Chaco",
+        date: "03 de julio, 2024",
+        image: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=600&q=80",
+        text: "Cuentan los abuelos que el armadillo no cava para esconderse, sino para escuchar los secretos del corazón de la tierra. Cuando termina su labor, deja la puerta abierta para que el zorro, la serpiente y el ave encuentren paz en la tormenta."
+      }
+    ];
+
+    let stories = [];
+    let currentImageDataUrl = ""; // dataURL de la imagen seleccionada (para incrustar en el Issue)
+    let currentImageName = "";
+
+    const FALLBACK_IMG = "https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?auto=format&fit=crop&w=600&q=80";
+
+    // ----------------------------------------------------------------
+    // CARGA DE HISTORIAS DESDE EL REPOSITORIO (data/stories.json)
+    // ----------------------------------------------------------------
+    async function loadStories() {
+      try {
+        // cache-buster para ver cambios recientes
+        const res = await fetch(`${STORIES_JSON_URL}?t=${Date.now()}`, { cache: "no-store" });
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        const data = await res.json();
+        stories = Array.isArray(data) ? data : (data.stories || []);
+        if (!stories.length) stories = fallbackStories;
+      } catch (err) {
+        console.warn("No se pudo cargar stories.json, usando respaldo:", err.message);
+        stories = fallbackStories;
+      }
+      renderStories();
+    }
+
+    // ----------------------------------------------------------------
+    // PREVISUALIZACIÓN DE IMAGEN
+    // ----------------------------------------------------------------
+    function handleImagePreview(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      if (file.size > MAX_IMAGE_BYTES) {
+        alert("La imagen supera los 2 MB. Por favor elige una más liviana.");
+        event.target.value = "";
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        currentImageDataUrl = e.target.result;
+        currentImageName = file.name;
+        document.getElementById('imagePreview').src = currentImageDataUrl;
+        document.getElementById('imagePreviewContainer').classList.remove('hidden');
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function clearImagePreview() {
+      currentImageDataUrl = "";
+      currentImageName = "";
+      document.getElementById('imagePreview').src = "";
+      document.getElementById('imagePreviewContainer').classList.add('hidden');
+      document.getElementById('storyImageInput').value = "";
+    }
+
+    // ----------------------------------------------------------------
+    // PUBLICACIÓN: abre un GitHub Issue con los datos de la historia.
+    // El Action del repo lo procesa y lo añade a stories.json.
+    // ----------------------------------------------------------------
+    function publishStory() {
+      const author = document.getElementById('authorName').value.trim();
+      const narrative = document.getElementById('storyNarrative').value.trim();
+
+      if (!author || !narrative) {
+        alert("Por favor completa tu nombre y tu narración.");
+        return;
+      }
+
+      // Construir el cuerpo del Issue en el formato que el Action espera.
+      // Usamos bloques delimitados para que el procesador los extraiga sin ambigüedad.
+      let body = "";
+      body += "### Autor\n\n" + author + "\n\n";
+      body += "### Narración\n\n" + narrative + "\n\n";
+      body += "### Imagen\n\n";
+      if (currentImageDataUrl) {
+        body += "_(imagen adjunta abajo)_\n\n";
+        body += "```image\n" + currentImageName + "\n" + currentImageDataUrl + "\n```\n";
+      } else {
+        body += "_(sin imagen)_\n";
+      }
+
+      const title = "Nueva historia: " + author.substring(0, 60);
+      const url = NEW_ISSUE_URL
+        + "?labels=nueva-historia"
+        + "&title=" + encodeURIComponent(title)
+        + "&body=" + encodeURIComponent(body);
+
+      // Si la URL es demasiado larga (imagen grande), avisamos.
+      if (url.length > 7000) {
+        alert(
+          "La imagen es demasiado pesada para enviarse por este método. " +
+          "Publica la historia sin imagen, o usa una imagen más pequeña (menos de ~1 MB)."
+        );
+        return;
+      }
+
+      // Vista optimista: mostramos la historia de inmediato en el muro.
+      const now = new Date();
+      const formattedDate = now.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+      stories.unshift({
+        id: "pending-" + Date.now(),
+        author,
+        date: formattedDate,
+        image: currentImageDataUrl || FALLBACK_IMG,
+        text: narrative,
+        pending: true
+      });
+      renderStories();
+
+      // Abrimos el Issue en una pestaña nueva para que el usuario confirme el envío.
+      window.open(url, "_blank", "noopener");
+
+      // Limpiamos el formulario.
+      document.getElementById('authorName').value = "";
+      document.getElementById('storyNarrative').value = "";
+      clearImagePreview();
+
+      document.getElementById('storiesGrid').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    // ----------------------------------------------------------------
+    // RENDER DEL MURO
+    // ----------------------------------------------------------------
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function renderStories() {
+      const grid = document.getElementById('storiesGrid');
+      grid.innerHTML = "";
+
+      if (!stories.length) {
+        grid.innerHTML = '<p class="col-span-full text-center text-stone-500 text-sm py-8">Aún no hay historias publicadas. ¡Sé el primero en compartir la tuya!</p>';
+        return;
+      }
+
+      stories.forEach((story) => {
+        const text = story.text || "";
+        const isLongText = text.length > 200;
+        const shortText = isLongText ? text.substring(0, 200) + "..." : text;
+        const author = story.author || "Anónimo";
+        const image = story.image || FALLBACK_IMG;
+        const date = story.date || "";
+        const pendingBadge = story.pending
+          ? '<div class="absolute top-3 left-3 bg-amber-500/90 backdrop-blur-sm text-white text-[11px] px-2.5 py-0.5 rounded-full font-sans">En revisión…</div>'
+          : '';
+
+        const card = document.createElement('div');
+        card.className = "bg-white rounded-2xl border border-stone-200/90 overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 flex flex-col group";
+
+        card.innerHTML = `
+          <div class="h-48 w-full bg-sand-100 overflow-hidden relative border-b border-stone-100">
+            <img
+              src="${escapeHtml(image)}"
+              alt="Ilustración de ${escapeHtml(author)}"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              onerror="this.src='${FALLBACK_IMG}'"
+            >
+            ${pendingBadge}
+            <div class="absolute top-3 right-3 bg-stone-900/60 backdrop-blur-sm text-white text-[11px] px-2.5 py-0.5 rounded-full font-sans">
+              Armador
+            </div>
+          </div>
+
+          <div class="p-5 flex-1 flex flex-col justify-between cursor-pointer" onclick="toggleStoryText('${story.id}')" title="Clic para expandir/contraer texto">
+            <div class="space-y-2">
+              <div id="content-${story.id}" class="text-stone-800 text-sm sm:text-base leading-relaxed font-sans">
+                <span id="text-${story.id}">${escapeHtml(shortText)}</span>
+                ${isLongText ? `
+                  <button type="button" class="text-brand-800 font-semibold hover:underline text-xs inline-block ml-1 focus:outline-none">
+                    <span id="btn-label-${story.id}">Leer más</span>
+                  </button>
+                ` : ''}
+              </div>
+            </div>
+
+            <div class="mt-4 pt-3 border-t border-stone-100 flex items-center justify-between text-xs text-stone-500">
+              <span class="font-medium text-stone-800 flex items-center gap-1.5">
+                <span class="w-5 h-5 rounded-full bg-sand-200 text-stone-700 flex items-center justify-center text-[10px] font-bold">
+                  ${escapeHtml(author.charAt(0).toUpperCase())}
+                </span>
+                ${escapeHtml(author)}
+              </span>
+              <span class="text-stone-400 font-mono text-[11px]">${escapeHtml(date)}</span>
+            </div>
+          </div>
+        `;
+
+        grid.appendChild(card);
+      });
+    }
+
+    // Expandir / contraer textos largos
+    function toggleStoryText(storyId) {
+      const story = stories.find(s => String(s.id) === String(storyId));
+      if (!story || !story.text || story.text.length <= 200) return;
+
+      const textElem = document.getElementById(`text-${storyId}`);
+      const btnLabel = document.getElementById(`btn-label-${storyId}`);
+      if (!textElem) return;
+
+      const isExpanded = textElem.getAttribute('data-expanded') === 'true';
+      if (isExpanded) {
+        textElem.textContent = story.text.substring(0, 200) + "...";
+        textElem.setAttribute('data-expanded', 'false');
+        if (btnLabel) btnLabel.textContent = "Leer más";
+      } else {
+        textElem.textContent = story.text;
+        textElem.setAttribute('data-expanded', 'true');
+        if (btnLabel) btnLabel.textContent = "Mostrar menos";
+      }
+    }
+
+    // Conectar formulario
+    document.getElementById('storyForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      publishStory();
+    });
+
+    // Cargar historias al iniciar
+    document.addEventListener('DOMContentLoaded', loadStories);
+  </script>
+
+</body>
+</html>
