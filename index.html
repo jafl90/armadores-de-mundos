@@ -89,15 +89,31 @@
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
+
+    /* ----- Mejoras de visualización móvil (Android/iOS) ----- */
+    /* Evita el scroll horizontal y el "zoom" lateral en pantallas pequeñas. */
+    html, body {
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+    /* Ninguna imagen o video debe desbordar su contenedor. */
+    img, video, audio, iframe {
+      max-width: 100%;
+    }
+    /* Las palabras o enlaces muy largos se parten en vez de empujar el ancho. */
+    p, span, a, h1, h2, h3, h4, h5, li {
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+    }
   </style>
 </head>
 <body class="bg-[#FAF8F5] text-stone-800 font-sans antialiased selection:bg-brand-200 selection:text-brand-900">
 
   <!-- Top Announcement / Kurupira Style Banner -->
   <div class="bg-brand-950 text-brand-200 text-xs py-2 px-4 border-b border-brand-900/60">
-    <div class="max-w-6xl mx-auto flex items-center justify-between">
+    <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-center sm:justify-between gap-2 text-center sm:text-left">
       <div class="flex items-center gap-2">
-        <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0"></span>
         <span class="tracking-wide">Iniciativa de Divulgación y Conservación de la Biodiversidad • Inspirado en Fundación Kurupira</span>
       </div>
       <div class="hidden sm:flex items-center gap-4 text-brand-300">
@@ -114,7 +130,7 @@
       <!-- Logotipo centrado & Título ampliado 3x -->
       <div class="flex flex-col items-center justify-center text-center py-4 w-full">
         <a href="#inicio" class="flex flex-col items-center gap-4 group">
-          <div class="relative max-w-full overflow-hidden bg-transparent transition duration-300 flex items-center justify-center p-2" style="width: 512px; max-width: 100%; height: 384px;">
+          <div class="relative w-full max-w-[280px] sm:max-w-[380px] lg:max-w-[512px] aspect-[4/3] overflow-hidden bg-transparent transition duration-300 flex items-center justify-center p-2 mx-auto">
             <img src="Armadora de mundos.png" alt="Armadores de Mundos - Armadillo gigante" class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105" style="mix-blend-mode: multiply;">
           </div>
           <div class="flex flex-col items-center">
