@@ -84,8 +84,16 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 $author = isset($_POST['author']) ? trim($_POST['author']) : '';
 $text   = isset($_POST['text'])   ? trim($_POST['text'])   : '';
 
-if ($author === '' || $text === '') {
-    responder(400, ['ok' => false, 'error' => 'Faltan el nombre o la narración.']);
+// ¿Llegó una imagen válida en la petición?
+$hasImage = isset($_FILES['image']) && $_FILES['image']['error'] !== UPLOAD_ERR_NO_FILE;
+
+// El nombre siempre es obligatorio.
+if ($author === '') {
+    responder(400, ['ok' => false, 'error' => 'Falta el nombre o seudónimo.']);
+}
+// Debe haber al menos una narración O una imagen.
+if ($text === '' && !$hasImage) {
+    responder(400, ['ok' => false, 'error' => 'Comparte una narración, una imagen, o ambas.']);
 }
 if (mb_strlen($author) > MAX_AUTHOR_CHARS) {
     $author = mb_substr($author, 0, MAX_AUTHOR_CHARS);

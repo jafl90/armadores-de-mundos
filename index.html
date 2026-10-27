@@ -327,11 +327,11 @@
           <div>
             <div class="flex justify-between items-center mb-2">
               <label for="storyNarrative" class="block text-sm font-semibold text-stone-700">
-                Tu narración&nbsp;<span class="text-amber-600">*</span>
+                Tu narración
               </label>
-              <span class="text-xs text-stone-400">Sin límite de caracteres</span>
+              <span class="text-xs text-stone-400">Opcional si subes una imagen · Sin límite de caracteres</span>
             </div>
-            <textarea id="storyNarrative" rows="6" required placeholder="Escribe aquí tu relato..." class="w-full px-4 py-3 rounded-xl border border-stone-300 focus:border-amber-700 focus:ring-2 focus:ring-amber-200 bg-stone-50/50 text-stone-800 text-base outline-none transition"></textarea>
+            <textarea id="storyNarrative" rows="6" placeholder="Escribe aquí tu relato... (opcional si compartes una ilustración)" class="w-full px-4 py-3 rounded-xl border border-stone-300 focus:border-amber-700 focus:ring-2 focus:ring-amber-200 bg-stone-50/50 text-stone-800 text-base outline-none transition"></textarea>
           </div>
 
           <!-- Selector / Carga de imagen -->
@@ -435,12 +435,6 @@
     const API_GUARDAR = "guardar.php";
     const MAX_IMAGE_BYTES = 4 * 1024 * 1024; // 4 MB (debe coincidir con guardar.php)
 
-    const FALLBACK_IMG = "https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?auto=format&fit=crop&w=600&q=80";
-
-    // Imagen por defecto para publicaciones de SOLO TEXTO (sin imagen propia).
-    // Debe estar en la misma carpeta que index.html.
-    const DEFAULT_TEXT_IMG = "Armadora de mundos.png";
-
     let stories = [];
 
     // ----------------------------------------------------------------
@@ -495,16 +489,23 @@
 
       const author = authorInput.value.trim();
       const narrative = narrativeInput.value.trim();
+      const hasImage = !!imageInput.files[0];
 
-      if (!author || !narrative) {
-        alert("Por favor completa tu nombre y tu narración.");
+      // El nombre siempre es obligatorio.
+      if (!author) {
+        alert("Por favor escribe tu nombre o seudónimo.");
+        return;
+      }
+      // Debe haber al menos una narración O una imagen.
+      if (!narrative && !hasImage) {
+        alert("Comparte una narración, una imagen, o ambas.");
         return;
       }
 
       const formData = new FormData();
       formData.append('author', author);
-      formData.append('text', narrative);
-      if (imageInput.files[0]) {
+      formData.append('text', narrative); // puede ir vacío si solo se sube imagen
+      if (hasImage) {
         formData.append('image', imageInput.files[0]);
       }
 
@@ -569,9 +570,10 @@
         const isLongText = text.length > 200;
         const shortText = isLongText ? text.substring(0, 200) + "..." : text;
         const author = story.author || "Anónimo";
-        // Si la historia no trae imagen (publicación de solo texto),
-        // mostramos la imagen por defecto "Armadora de mundos.png".
-        const image = story.image && story.image.trim() !== "" ? story.image : DEFAULT_TEXT_IMG;
+        // Publicaciones de solo texto: sin imagen (image queda vacío y no se
+        // renderiza el bloque de imagen). Solo se muestra imagen si el usuario
+        // subió una.
+        const image = story.image && story.image.trim() !== "" ? story.image : "";
         const date = story.date || "";
 
         const card = document.createElement('div');
@@ -583,7 +585,7 @@
               src="${escapeHtml(image)}"
               alt="Ilustración de ${escapeHtml(author)}"
               class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-              onerror="this.onerror=null;this.src='${DEFAULT_TEXT_IMG}'"
+              onerror="this.onerror=null;this.closest('.h-48').style.display='none'"
             >
             <div class="absolute top-3 right-3 bg-stone-900/60 backdrop-blur-sm text-white text-[11px] px-2.5 py-0.5 rounded-full font-sans">
               Armador
