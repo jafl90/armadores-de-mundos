@@ -437,6 +437,10 @@
 
     const FALLBACK_IMG = "https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?auto=format&fit=crop&w=600&q=80";
 
+    // Imagen por defecto para publicaciones de SOLO TEXTO (sin imagen propia).
+    // Debe estar en la misma carpeta que index.html.
+    const DEFAULT_TEXT_IMG = "Armadora de mundos.png";
+
     let stories = [];
 
     // ----------------------------------------------------------------
@@ -565,7 +569,9 @@
         const isLongText = text.length > 200;
         const shortText = isLongText ? text.substring(0, 200) + "..." : text;
         const author = story.author || "Anónimo";
-        const image = story.image || FALLBACK_IMG;
+        // Si la historia no trae imagen (publicación de solo texto),
+        // mostramos la imagen por defecto "Armadora de mundos.png".
+        const image = story.image && story.image.trim() !== "" ? story.image : DEFAULT_TEXT_IMG;
         const date = story.date || "";
 
         const card = document.createElement('div');
@@ -577,7 +583,7 @@
               src="${escapeHtml(image)}"
               alt="Ilustración de ${escapeHtml(author)}"
               class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-              onerror="this.onerror=null;this.src='${FALLBACK_IMG}'"
+              onerror="this.onerror=null;this.src='${DEFAULT_TEXT_IMG}'"
             >
             <div class="absolute top-3 right-3 bg-stone-900/60 backdrop-blur-sm text-white text-[11px] px-2.5 py-0.5 rounded-full font-sans">
               Armador
