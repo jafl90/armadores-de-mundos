@@ -421,6 +421,21 @@
   </footer>
 
   <!-- ============================================================= -->
+  <!-- LIGHTBOX: visor de imagen ampliada                             -->
+  <!-- Se muestra al hacer clic en la imagen de una ficha. Al hacer   -->
+  <!-- clic fuera de la imagen (o pulsar Escape) se cierra.           -->
+  <!-- ============================================================= -->
+  <div id="lightbox" class="hidden fixed inset-0 z-[100] bg-black/85 backdrop-blur-sm items-center justify-center p-4 sm:p-8 cursor-zoom-out" onclick="closeLightbox(event)">
+    <!-- Botón cerrar -->
+    <button type="button" onclick="closeLightbox(event)" aria-label="Cerrar" class="absolute top-4 right-4 sm:top-6 sm:right-6 w-11 h-11 rounded-full bg-white/10 hover:bg-white/25 text-white flex items-center justify-center text-2xl leading-none transition cursor-pointer">
+      &times;
+    </button>
+    <!-- La imagen en proporciones originales. stopPropagation: clic sobre la
+         imagen NO cierra el visor; solo el clic en el fondo lo cierra. -->
+    <img id="lightboxImage" src="" alt="" class="max-w-full max-h-full object-contain rounded-lg shadow-2xl cursor-default" onclick="event.stopPropagation()">
+  </div>
+
+  <!-- ============================================================= -->
   <!-- SCRIPT: Muro de historias conectado al host (PHP)              -->
   <!--                                                                -->
   <!-- Cómo funciona:                                                 -->
@@ -556,6 +571,38 @@
         .replace(/"/g, "&quot;");
     }
 
+    // ----------------------------------------------------------------
+    // LIGHTBOX: abrir imagen ampliada en proporciones originales
+    // ----------------------------------------------------------------
+    function openLightbox(src, alt) {
+      const lb = document.getElementById('lightbox');
+      const img = document.getElementById('lightboxImage');
+      img.src = src;
+      img.alt = alt || "";
+      lb.classList.remove('hidden');
+      lb.classList.add('flex');
+      document.body.style.overflow = 'hidden'; // evita scroll del fondo
+    }
+
+    function closeLightbox(event) {
+      // Si viene de un clic, solo cerramos cuando NO se hizo clic sobre la imagen.
+      // (El clic sobre la imagen llama a event.stopPropagation(), así que este
+      //  handler solo se dispara desde el fondo o el botón de cerrar.)
+      const lb = document.getElementById('lightbox');
+      lb.classList.add('hidden');
+      lb.classList.remove('flex');
+      document.getElementById('lightboxImage').src = "";
+      document.body.style.overflow = ''; // restaura el scroll
+    }
+
+    // Cerrar el lightbox con la tecla Escape.
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        const lb = document.getElementById('lightbox');
+        if (lb && !lb.classList.contains('hidden')) closeLightbox();
+      }
+    });
+
     function renderStories() {
       const grid = document.getElementById('storiesGrid');
       grid.innerHTML = "";
@@ -589,7 +636,8 @@
               <img
                 src="${escapeHtml(image)}"
                 alt="Ilustración de ${escapeHtml(author)}"
-                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 cursor-zoom-in"
+                onclick="openLightbox(this.src, this.alt)"
                 onerror="this.onerror=null;this.closest('div').style.display='none'"
               >
               <div class="absolute top-3 right-3 bg-stone-900/60 backdrop-blur-sm text-white text-[11px] px-2.5 py-0.5 rounded-full font-sans">
@@ -620,7 +668,8 @@
             <img
               src="${escapeHtml(image)}"
               alt="Ilustración de ${escapeHtml(author)}"
-              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 cursor-zoom-in"
+              onclick="event.stopPropagation();openLightbox(this.src, this.alt)"
               onerror="this.onerror=null;this.closest('.h-48').style.display='none'"
             >
             <div class="absolute top-3 right-3 bg-stone-900/60 backdrop-blur-sm text-white text-[11px] px-2.5 py-0.5 rounded-full font-sans">
